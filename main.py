@@ -12,6 +12,10 @@ def create_board(x, y, num_bombs):
     board = np.zeros((x, y))
     for coords in bomb_positions:
         board[coords[0]][coords[1]] = x*y
+    for i in range(x):
+        for j in range(y):
+            # need to set the values for all the non bomb spots
+            pass
     return board
 
 print("Welcome to Minesweeper!")
