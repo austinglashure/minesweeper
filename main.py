@@ -1,11 +1,18 @@
 import numpy as np
+import random
 
 def display_board(board):
     print(board)
 
 def create_board(x, y, num_bombs):
-    print(f"You want {num_bombs} bombs\n")
-    return np.zeros((x, y))
+    bomb_positions = set()
+    while len(bomb_positions) != num_bombs:
+        pos = (random.randint(0, x-1), random.randint(0, y-1))
+        bomb_positions.add(pos)
+    board = np.zeros((x, y))
+    for coords in bomb_positions:
+        board[coords[0]][coords[1]] = x*y
+    return board
 
 print("Welcome to Minesweeper!")
 
