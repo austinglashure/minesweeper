@@ -1,44 +1,83 @@
+import numpy as np
 import random
-import math
 
-print("Welcome to Minesweeper!\n")
-width = int(input("How wide do you want the board? (max is 10)\n"))
-length = int(input ("How tall do you want the board? (max is 10)\n"))
-print(f"Okay! Creating the board with dimensions {length}x{width}\n")
-bomb = '@'
-tile = '#'
-empty = 'O'
+def display_board(board):
+    print(board)
 
-class Tile:
-    def __init__(self, position, hasBomb, board):
-        self.x = position[0]
-        self.y = position[1]
-        self.isBomb = hasBomb
-        self.initial_value = tile
-        if self.isBomb:
-            self.under_value = bomb
+def create_board(x, y, num_bombs):
+    bomb_positions = set()
+    while len(bomb_positions) != num_bombs:
+        pos = (random.randint(0, x-1), random.randint(0, y-1))
+        bomb_positions.add(pos)
+    board = np.zeros((x, y))
+    for coords in bomb_positions:
+        board[coords[0]][coords[1]] = x*y
+        print(f"coords: {coords[0]} {coords[1]}")
+        if coords[0] == 0 and coords[1] == 0:
+            print("top left")
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]] += 1
+        elif coords[0] == x-1 and coords[1] == y-1:
+            print("bottom right")
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]] += 1
+        elif coords[0] == 0 and coords[1] == y-1:
+            print("top right")
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+        elif coords[0] == x-1 and coords[1] == 0:
+            print("bottom left")
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+        elif coords[0] == 0:
+            print("top")
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]+1] += 1
+        elif coords[1] == 0:
+            print("left")
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+        elif coords[0] == x-1:
+            print("bottom")
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+        elif coords[1] == y-1:
+            print("right")
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]-1] += 1
         else:
-            self.under_value = empty
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+    return board
 
+print("Welcome to Minesweeper!")
 
-board = []
-counter = 0
-amount = round(math.sqrt(width*length))
-print(amount)
-size = width*length
-print(size)
-bomb_positions = [random.randint(0, size-1) for i in range(amount)]
-print(bomb_positions)
-for i in range(width):
-    for j in range(length):
-        if counter in bomb_positions:
-            tile = Tile([i, j], True, board)
-            board.append(tile)
-        else:
-            tile = Tile([i, j], False, board)
-            board.append(tile)
-        counter += 1
+x = int(input("How wide do you want the game board?\n"))
+y = int(input("How tall do you want it?\n"))
+bombs = int(input("How many bombs do you want?\n"))
 
-for tile in board:
-    print(f"pos: {tile.x}{tile.y}")
-    print(tile.isBomb)
+game_board = create_board(x, y, bombs)
+
+display_board(game_board)
