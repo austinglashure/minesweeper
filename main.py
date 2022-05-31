@@ -12,10 +12,64 @@ def create_board(x, y, num_bombs):
     board = np.zeros((x, y))
     for coords in bomb_positions:
         board[coords[0]][coords[1]] = x*y
-    for i in range(x):
-        for j in range(y):
-            # need to set the values for all the non bomb spots
-            pass
+        print(f"coords: {coords[0]} {coords[1]}")
+        if coords[0] == 0 and coords[1] == 0:
+            print("top left")
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]] += 1
+        elif coords[0] == x-1 and coords[1] == y-1:
+            print("bottom right")
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]] += 1
+        elif coords[0] == 0 and coords[1] == y-1:
+            print("top right")
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+        elif coords[0] == x-1 and coords[1] == 0:
+            print("bottom left")
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+        elif coords[0] == 0:
+            print("top")
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]+1] += 1
+        elif coords[1] == 0:
+            print("left")
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+        elif coords[0] == x-1:
+            print("bottom")
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]-1][coords[1]+1] += 1
+        elif coords[1] == y-1:
+            print("right")
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+        else:
+            board[coords[0]+1][coords[1]+1] += 1
+            board[coords[0]-1][coords[1]-1] += 1
+            board[coords[0]+1][coords[1]] += 1
+            board[coords[0]-1][coords[1]] += 1
+            board[coords[0]][coords[1]-1] += 1
+            board[coords[0]][coords[1]+1] += 1
+            board[coords[0]+1][coords[1]-1] += 1
+            board[coords[0]-1][coords[1]+1] += 1
     return board
 
 print("Welcome to Minesweeper!")
