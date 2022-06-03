@@ -1,4 +1,5 @@
 import numpy as np
+import pygame
 import random
 
 def display_board(board):
